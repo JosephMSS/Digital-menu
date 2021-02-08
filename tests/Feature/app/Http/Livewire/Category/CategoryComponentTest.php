@@ -26,4 +26,21 @@ class CategoryComponentTest extends TestCase
         // ->assertSee('Edit category');
         $this->assertDatabaseHas('categories',['name'=>$category->name]);
     }
+    public function test_validate_store()
+    {   
+        Livewire::test(CategoryComponent::class)
+        ->set(['name'=>' ','user_id'=>' '])
+        ->call('store');
+        // ->assertSee('Edit category');
+        $this->assertDatabaseCount('categories',0);
+    }
+    public function test_edit()
+    {
+        $category=Category::factory()->create();
+        Livewire::test(CategoryComponent::class)
+        ->call('edit',$category->id)
+        ->assertSet('name',$category->name);
+    }
+  
+ 
 }
