@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CategoryFactory extends Factory
@@ -22,6 +23,7 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
+            'user_id'=>User::factory()->create(),
             'name'=>$this->faker->title
         ];
     }
