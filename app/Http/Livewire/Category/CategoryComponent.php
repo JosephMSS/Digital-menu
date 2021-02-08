@@ -30,5 +30,17 @@ class CategoryComponent extends Component
         $this->name=$category->name;
         $this->user_id=$category->user_id;
     }
-    
+     public function update()
+    {
+        $this->validate([
+            'name' => 'required',
+        ]);
+
+        $category=Category::find($this->user_id);
+        // dd($this->name);
+        $category->update([
+            'name'=>$this->name,
+        ]);
+        
+    }
 }

@@ -41,6 +41,19 @@ class CategoryComponentTest extends TestCase
         ->call('edit',$category->id)
         ->assertSet('name',$category->name);
     }
-  
+    public function test_update()
+    {
+        $category=Category::factory()->create();
+        $newDataCategory=Category::factory()->make();//nueva info
+
+        Livewire::test(CategoryComponent::class)
+        ->call('edit',$category->id)//selecciono
+        ->set(['name'=>$newDataCategory->name])//nueva informacion
+        ->call('update');//actualizo
+        
+        $this->assertDatabaseHas('categories',['id'=>$category->id,'name'=>$newDataCategory->name]);//verifico que se guardo la nueva informacion
+    }
+ 
+
  
 }
