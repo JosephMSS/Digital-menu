@@ -22,7 +22,8 @@ class CategoryComponentTest extends TestCase
         $category = Category::factory()->make();
         Livewire::test(CategoryComponent::class)
             ->set(['name' => $category->name, 'user_id' => $category->user->id])
-            ->call('store');
+            ->call('store')
+            ->assertSet('view', 'edit');
         $this->assertDatabaseHas('categories', ['name' => $category->name]);
     }
     public function test_validate_store()
@@ -37,7 +38,16 @@ class CategoryComponentTest extends TestCase
         $category = Category::factory()->create();
         Livewire::test(CategoryComponent::class)
             ->call('edit', $category->id)
-            ->assertSet('name', $category->name);
+            ->assertSet('name', $category->name)
+            ->assertSet('view', 'edit');
+            
+    }
+    public function test_default_state()
+    {   
+        Livewire::test(CategoryComponent::class)
+            ->call('default')
+            ->assertSet('name', ' ')
+            ->assertSet('view', 'create');
     }
     public function test_update()
     {
@@ -47,7 +57,10 @@ class CategoryComponentTest extends TestCase
         Livewire::test(CategoryComponent::class)
             ->call('edit', $category->id) //selecciono
             ->set(['name' => $newDataCategory->name]) //nueva informacion
-            ->call('update'); //actualizo
+            ->call('update')
+            ->assertSet('view','create')
+            ->assertSet('name',' ');
+             //actualizo
 
         $this->assertDatabaseHas('categories', ['id' => $category->id, 'name' => $newDataCategory->name]); //verifico que se guardo la nueva informacion
     }
@@ -72,4 +85,5 @@ class CategoryComponentTest extends TestCase
 
         $this->assertSoftDeleted('categories', ['id' => $category->id]);
     }
+    
 }
