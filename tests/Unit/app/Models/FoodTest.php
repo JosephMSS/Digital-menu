@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Food;
 use App\Models\Ingredient;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -28,6 +29,8 @@ class FoodTest extends TestCase
         $ingredient=Ingredient::factory()->create();
         
         $food->ingredients()->attach(['food_id'=>$food->id,'ingredient_id'=>$ingredient->id]);
+        
+        $this->assertInstanceOf(Collection::class,$food->ingredients);
         
         $this->assertInstanceOf(Ingredient::class,$food->ingredients->first());
         /**
