@@ -27,4 +27,10 @@ class UserTest extends TestCase
         
         $this->assertInstanceOf(Collection::class,$user->ingredients);
     }
+    public function test_has_many_categories()
+    {
+        $user=new User();
+        
+        $this->assertInstanceOf(Collection::class,$user->categories);
+    }
 }
