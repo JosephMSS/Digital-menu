@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\app\Models;
 
+use App\Models\Category;
 use App\Models\Food;
 use App\Models\Ingredient;
 use App\Models\User;
@@ -35,5 +36,13 @@ class FoodTest extends TestCase
          * extraemos una instancia de 
          * Eloquent\Collection
          */
+    }
+    public function test_belongs_to_category()
+    {
+        $category=Category::factory()->create();
+        $food=Food::factory()->create(['category_id'=>$category->id]);
+              
+        $this->assertInstanceOf(Category::class,$food->category);
+       
     }
 }
