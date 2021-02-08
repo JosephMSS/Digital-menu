@@ -53,7 +53,15 @@ class CategoryComponentTest extends TestCase
         
         $this->assertDatabaseHas('categories',['id'=>$category->id,'name'=>$newDataCategory->name]);//verifico que se guardo la nueva informacion
     }
- 
+    public function test_soft_delete()
+    {
+        $category=Category::factory()->create();
+
+        Livewire::test(CategoryComponent::class)
+        ->call('destroy',$category->id);//selecciono
+        
+        $this->assertSoftDeleted('categories',['id'=>$category->id]);//verifico que se guardo la nueva informacion
+    }
 
  
 }

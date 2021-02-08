@@ -43,4 +43,8 @@ class CategoryComponent extends Component
         ]);
         
     }
+    public function destroy($id)
+    {
+        Category::destroy($id);
+    }
 }
