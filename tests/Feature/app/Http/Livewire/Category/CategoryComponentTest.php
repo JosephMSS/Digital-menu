@@ -19,49 +19,57 @@ class CategoryComponentTest extends TestCase
     use RefreshDatabase;
     public function test_store()
     {
-        $category=Category::factory()->make();
+        $category = Category::factory()->make();
         Livewire::test(CategoryComponent::class)
-        ->set(['name'=>$category->name,'user_id'=>$category->user->id])
-        ->call('store');
-        // ->assertSee('Edit category');
-        $this->assertDatabaseHas('categories',['name'=>$category->name]);
+            ->set(['name' => $category->name, 'user_id' => $category->user->id])
+            ->call('store');
+        $this->assertDatabaseHas('categories', ['name' => $category->name]);
     }
     public function test_validate_store()
-    {   
+    {
         Livewire::test(CategoryComponent::class)
-        ->set(['name'=>' ','user_id'=>' '])
-        ->call('store');
-        // ->assertSee('Edit category');
-        $this->assertDatabaseCount('categories',0);
+            ->set(['name' => ' ', 'user_id' => ' '])
+            ->call('store');
+        $this->assertDatabaseCount('categories', 0);
     }
     public function test_edit()
     {
-        $category=Category::factory()->create();
+        $category = Category::factory()->create();
         Livewire::test(CategoryComponent::class)
-        ->call('edit',$category->id)
-        ->assertSet('name',$category->name);
+            ->call('edit', $category->id)
+            ->assertSet('name', $category->name);
     }
     public function test_update()
     {
-        $category=Category::factory()->create();
-        $newDataCategory=Category::factory()->make();//nueva info
+        $category = Category::factory()->create();
+        $newDataCategory = Category::factory()->make(); //nueva info
 
         Livewire::test(CategoryComponent::class)
-        ->call('edit',$category->id)//selecciono
-        ->set(['name'=>$newDataCategory->name])//nueva informacion
-        ->call('update');//actualizo
-        
-        $this->assertDatabaseHas('categories',['id'=>$category->id,'name'=>$newDataCategory->name]);//verifico que se guardo la nueva informacion
+            ->call('edit', $category->id) //selecciono
+            ->set(['name' => $newDataCategory->name]) //nueva informacion
+            ->call('update'); //actualizo
+
+        $this->assertDatabaseHas('categories', ['id' => $category->id, 'name' => $newDataCategory->name]); //verifico que se guardo la nueva informacion
+    }
+    public function test_validate_update()
+    {
+        $category = Category::factory()->create();
+
+        Livewire::test(CategoryComponent::class)
+            ->call('edit', $category->id) //selecciono
+            ->set(['name' => ' ']) //nueva informacion
+            ->call('update'); //actualizo
+
+        $this->assertDatabaseHas('categories', ['name' => $category->name]); //verifico que se guardo la nueva informacion
+
     }
     public function test_soft_delete()
     {
-        $category=Category::factory()->create();
+        $category = Category::factory()->create();
 
         Livewire::test(CategoryComponent::class)
-        ->call('destroy',$category->id);//selecciono
-        
-        $this->assertSoftDeleted('categories',['id'=>$category->id]);//verifico que se guardo la nueva informacion
-    }
+            ->call('destroy', $category->id);
 
- 
+        $this->assertSoftDeleted('categories', ['id' => $category->id]);
+    }
 }
